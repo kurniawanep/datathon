@@ -204,7 +204,7 @@
                         <div class="row">
                           <div class="col-sm-12">
                             <div class="status-summary-chart-wrapper">
-                              <canvas id="lineChart"></canvas>
+                              <canvas id="temperatureChart"></canvas>
                             </div>
                           </div>
                         </div>
@@ -224,7 +224,7 @@
                         <div class="row">
                           <div class="col-sm-12">
                             <div class="status-summary-chart-wrapper pb-4">
-                              <canvas id="lineChartRH"></canvas>
+                              <canvas id="rhChart"></canvas>
                             </div>
                           </div>
                         </div>
@@ -243,7 +243,7 @@
                         <div class="row">
                           <div class="col-sm-12">
                             <div class="status-summary-chart-wrapper pb-4">
-                              <canvas id="lineChartRainfall"></canvas>
+                              <canvas id="rainfallChart"></canvas>
                             </div>
                           </div>
                         </div>
@@ -279,7 +279,6 @@
 
     <script>
       // Initialize the map
-      console.log("tes");
       var map = L.map("map").setView(
         [-7.246194969674581, 109.99566236877357],
         8
@@ -313,5 +312,17 @@
     <!-- <script src="assets/js/Chart.roundedBarCharts.js"></script> -->
     <script src="assets/js/chart.js"></script>
     <!-- End custom js for this page-->
+
+    <script>
+     document.addEventListener('DOMContentLoaded', function() {
+            getTemp();
+            getRh();
+            getRainfall();
+
+            setInterval(getTemp, 1000);
+            setInterval(getRh, 1000);
+            setInterval(getRainfall, 1000);
+        });
+    </script>
   </body>
 </html>

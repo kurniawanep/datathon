@@ -10,3 +10,5 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::post('/temp', [DataController::class, 'temp']);
+Route::post('/rh', [DataController::class, 'rh']);
+Route::post('/rainfall', [DataController::class, 'rainfall']);

@@ -1,394 +1,250 @@
-$(function () {
-  /* ChartJS
-   * -------
-   * Data and config for chartjs
-   */
-  "use strict";
-  var data = {
-    labels: [
-      "2011",
-      "2012",
-      "2013",
-      "2014",
-      "2014",
-      "2015",
-      "2016",
-      "2017",
-      "2018",
-      "2019",
-      "2020",
-      "2021",
-      "2022",
-      "2023",
-    ],
-    datasets: [
-      {
-        label: "# of Votes",
-        data: [10, 19, 3, 5, 2, 3, 1, 10, 15, 20, 4, 14, 15, 17],
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 206, 86, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
-          "rgba(255, 159, 64, 0.2)",
-        ],
-        borderColor: [
-          "rgba(255,99,132,1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(75, 192, 192, 1)",
-          "rgba(153, 102, 255, 1)",
-          "rgba(255, 159, 64, 1)",
-        ],
-        borderWidth: 1,
-        fill: false,
-      },
-    ],
-  };
-  var multiLineData = {
-    labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-    datasets: [
-      {
-        label: "Dataset 1",
-        data: [12, 19, 3, 5, 2, 3],
-        borderColor: ["#587ce4"],
-        borderWidth: 2,
-        fill: false,
-      },
-      {
-        label: "Dataset 2",
-        data: [5, 23, 7, 12, 42, 23],
-        borderColor: ["#ede190"],
-        borderWidth: 2,
-        fill: false,
-      },
-      {
-        label: "Dataset 3",
-        data: [15, 10, 21, 32, 12, 33],
-        borderColor: ["#f44252"],
-        borderWidth: 2,
-        fill: false,
-      },
-    ],
-  };
-  var options = {
-    scales: {
-      y: {
-        ticks: {
-          beginAtZero: true,
-        },
-      },
-    },
-    legend: {
-      display: false,
-    },
-    elements: {
-      line: {
-        tension: 0.5,
-      },
-      point: {
-        radius: 0,
-      },
-    },
-  };
-  var doughnutPieData = {
-    datasets: [
-      {
-        data: [30, 40, 30],
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.5)",
-          "rgba(54, 162, 235, 0.5)",
-          "rgba(255, 206, 86, 0.5)",
-          "rgba(75, 192, 192, 0.5)",
-          "rgba(153, 102, 255, 0.5)",
-          "rgba(255, 159, 64, 0.5)",
-        ],
-        borderColor: [
-          "rgba(255,99,132,1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(75, 192, 192, 1)",
-          "rgba(153, 102, 255, 1)",
-          "rgba(255, 159, 64, 1)",
-        ],
-      },
-    ],
+let temperatureChart = null;
+let rhChart = null;
+let rainfallChart = null;
 
-    // These labels appear in the legend and in the tooltips when hovering different arcs
-    labels: ["Pink", "Blue", "Yellow"],
-  };
-  var doughnutPieOptions = {
-    responsive: true,
-    animation: {
-      animateScale: true,
-      animateRotate: true,
-    },
-  };
-  var areaData = {
-    labels: ["2013", "2014", "2015", "2016", "2017"],
-    datasets: [
-      {
-        label: "# of Votes",
-        data: [12, 19, 3, 5, 2, 3],
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 206, 86, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
-          "rgba(255, 159, 64, 0.2)",
-        ],
-        borderColor: [
-          "rgba(255,99,132,1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(75, 192, 192, 1)",
-          "rgba(153, 102, 255, 1)",
-          "rgba(255, 159, 64, 1)",
-        ],
-        borderWidth: 1,
-        fill: true, // 3: no fill
-      },
-    ],
-  };
 
-  var areaOptions = {
-    elements: {
-      line: {
-        tension: 0.5,
-      },
-    },
-    plugins: {
-      filler: {
-        propagate: true,
-      },
-    },
-  };
+function getTemp() {
+    fetch("/getTemp") // Adjust the URL based on your route
+        .then((response) => response.json())
+        .then((data) => {
+            // console.log("Temperature Data:", data);
 
-  var multiAreaData = {
-    labels: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ],
-    datasets: [
-      {
-        label: "Facebook",
-        data: [8, 11, 13, 15, 12, 13, 16, 15, 13, 19, 11, 14],
-        borderColor: ["rgba(255, 99, 132, 0.5)"],
-        backgroundColor: ["rgba(255, 99, 132, 0.5)"],
-        borderWidth: 1,
-        fill: true,
-      },
-      {
-        label: "Twitter",
-        data: [7, 17, 12, 16, 14, 18, 16, 12, 15, 11, 13, 9],
-        borderColor: ["rgba(54, 162, 235, 0.5)"],
-        backgroundColor: ["rgba(54, 162, 235, 0.5)"],
-        borderWidth: 1,
-        fill: true,
-      },
-      {
-        label: "Linkedin",
-        data: [6, 14, 16, 20, 12, 18, 15, 12, 17, 19, 15, 11],
-        borderColor: ["rgba(255, 206, 86, 0.5)"],
-        backgroundColor: ["rgba(255, 206, 86, 0.5)"],
-        borderWidth: 1,
-        fill: true,
-      },
-    ],
-  };
+            // Extract years and temperatures
+            const years = data.data.map((item) => item.year);
+            const temperatures = data.data.map((item) => item.temperature);
 
-  var multiAreaOptions = {
-    plugins: {
-      filler: {
-        propagate: true,
-      },
-    },
-    elements: {
-      line: {
-        tension: 0.5,
-      },
-      point: {
-        radius: 0,
-      },
-    },
-    scales: {
-      x: {
-        gridLines: {
-          display: false,
-        },
-      },
-      y: {
-        gridLines: {
-          display: false,
-        },
-      },
-    },
-  };
+            // Get the context of the canvas element for temperature
+            const ctx = document
+                .getElementById("temperatureChart")
+                .getContext("2d");
 
-  var scatterChartData = {
-    datasets: [
-      {
-        label: "First Dataset",
-        data: [
-          {
-            x: -10,
-            y: 0,
-          },
-          {
-            x: 0,
-            y: 3,
-          },
-          {
-            x: -25,
-            y: 5,
-          },
-          {
-            x: 40,
-            y: 5,
-          },
-        ],
-        backgroundColor: ["rgba(255, 99, 132, 0.2)"],
-        borderColor: ["rgba(255,99,132,1)"],
-        borderWidth: 1,
-      },
-      {
-        label: "Second Dataset",
-        data: [
-          {
-            x: 10,
-            y: 5,
-          },
-          {
-            x: 20,
-            y: -30,
-          },
-          {
-            x: -25,
-            y: 15,
-          },
-          {
-            x: -10,
-            y: 5,
-          },
-        ],
-        backgroundColor: ["rgba(54, 162, 235, 0.2)"],
-        borderColor: ["rgba(54, 162, 235, 1)"],
-        borderWidth: 1,
-      },
-    ],
-  };
+            // Create a new chart if it doesn't exist
+            if (!temperatureChart) {
+                temperatureChart = new Chart(ctx, {
+                    type: "line",
+                    data: {
+                        labels: years,
+                        datasets: [
+                            {
+                                label: "Average Temperature",
+                                data: temperatures,
+                                borderColor: "rgba(75, 192, 192, 1)",
+                                backgroundColor: "rgba(75, 192, 192, 0.2)",
+                                borderWidth: 2,
+                                tension: 0.3, // Add smooth curves to the line
+                            },
+                        ],
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: "Year",
+                                },
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: "Temperature (°C)",
+                                },
+                                min: 25, // Set the minimum value of the y-axis
+                                max: 28, // Set the maximum value of the y-axis
+                                ticks: {
+                                    callback: function (value) {
+                                        return value + "°C"; // Append °C to y-axis labels
+                                    },
+                                },
+                            },
+                        },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: "top",
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (tooltipItem) {
+                                        return `Temperature: ${tooltipItem.raw}°C`; // Customize tooltip
+                                    },
+                                },
+                            },
+                        },
+                    },
+                });
+            } else {
+                // Update the existing chart with new data
+                temperatureChart.data.labels = years;
+                temperatureChart.data.datasets[0].data = temperatures;
+                temperatureChart.update();
+            }
+        })
+        .catch((error) => {
+            console.error("Error fetching data:", error);
+        });
+}
 
-  var scatterChartOptions = {
-    scales: {
-      x: {
-        type: "linear",
-        position: "bottom",
-      },
-    },
-  };
-  // Get context with jQuery - using jQuery's .get() method.
-  if ($("#barChart").length) {
-    var barChartCanvas = $("#barChart").get(0).getContext("2d");
-    // This will get the first returned node in the jQuery collection.
-    var barChart = new Chart(barChartCanvas, {
-      type: "bar",
-      data: data,
-      options: options,
-    });
-  }
+function getRh() {
+    fetch("/getRh") // Adjust the URL based on your route
+        .then((response) => response.json())
+        .then((data) => {
+            // console.log("RH Data:", data);
 
-  if ($("#lineChart").length) {
-    var lineChartCanvas = $("#lineChart").get(0).getContext("2d");
-    var lineChart = new Chart(lineChartCanvas, {
-      type: "line",
-      data: data,
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          x: {
-            beginAtZero: true,
-          },
-          y: {
-            beginAtZero: true,
-          },
-        },
-      },
-    });
-  }
+            // Extract years and RH values
+            const years = data.data.map((item) => item.year);
+            const rhValues = data.data.map((item) => item.rh);
 
-  if ($("#linechart-multi").length) {
-    var multiLineCanvas = $("#linechart-multi").get(0).getContext("2d");
-    var lineChart = new Chart(multiLineCanvas, {
-      type: "line",
-      data: multiLineData,
-      options: options,
-    });
-  }
+            // Get the context of the canvas element for RH
+            const ctx = document.getElementById("rhChart").getContext("2d");
 
-  if ($("#areachart-multi").length) {
-    var multiAreaCanvas = $("#areachart-multi").get(0).getContext("2d");
-    var multiAreaChart = new Chart(multiAreaCanvas, {
-      type: "line",
-      data: multiAreaData,
-      options: multiAreaOptions,
-    });
-  }
+            // Create a new chart if it doesn't exist
+            if (!rhChart) {
+                rhChart = new Chart(ctx, {
+                    type: "line",
+                    data: {
+                        labels: years,
+                        datasets: [
+                            {
+                                label: "Average RH",
+                                data: rhValues,
+                                borderColor: "rgba(153, 102, 255, 1)",
+                                backgroundColor: "rgba(153, 102, 255, 0.2)",
+                                borderWidth: 2,
+                                tension: 0.3, // Add smooth curves to the line
+                            },
+                        ],
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: "Year",
+                                },
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: "Relative Humidity (%)",
+                                },
+                                min: 70, // Set the minimum value of the y-axis
+                                max: 90, // Set the maximum value of the y-axis
+                                ticks: {
+                                    callback: function (value) {
+                                        return value + "%"; // Append % to y-axis labels
+                                    },
+                                },
+                            },
+                        },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: "top",
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (tooltipItem) {
+                                        return `RH: ${tooltipItem.raw}%`; // Customize tooltip
+                                    },
+                                },
+                            },
+                        },
+                    },
+                });
+            } else {
+                // Update the existing chart with new data
+                rhChart.data.labels = years;
+                rhChart.data.datasets[0].data = rhValues;
+                rhChart.update();
+            }
+        })
+        .catch((error) => {
+            console.error("Error fetching data:", error);
+        });
+}
 
-  if ($("#doughnutChart").length) {
-    var doughnutChartCanvas = $("#doughnutChart").get(0).getContext("2d");
-    var doughnutChart = new Chart(doughnutChartCanvas, {
-      type: "doughnut",
-      data: doughnutPieData,
-      options: doughnutPieOptions,
-    });
-  }
+function getRainfall() {
+    fetch("/getRainfall") // Adjust the URL based on your route
+        .then((response) => response.json())
+        .then((data) => {
+            // console.log("Rainfall Data:", data);
 
-  if ($("#pieChart").length) {
-    var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
-    var pieChart = new Chart(pieChartCanvas, {
-      type: "pie",
-      data: doughnutPieData,
-      options: doughnutPieOptions,
-    });
-  }
+            // Extract years and rainfall values
+            const years = data.data.map((item) => item.year);
+            const rainfallValues = data.data.map((item) => item.precipitation);
 
-  if ($("#areaChart").length) {
-    var areaChartCanvas = $("#areaChart").get(0).getContext("2d");
-    var areaChart = new Chart(areaChartCanvas, {
-      type: "line",
-      data: areaData,
-      options: areaOptions,
-    });
-  }
+            // console.log("Years:", years);
+            // console.log("Rainfall Values:", rainfallValues);
 
-  if ($("#scatterChart").length) {
-    var scatterChartCanvas = $("#scatterChart").get(0).getContext("2d");
-    var scatterChart = new Chart(scatterChartCanvas, {
-      type: "scatter",
-      data: scatterChartData,
-      options: scatterChartOptions,
-    });
-  }
+            // Get the context of the canvas element for rainfall
+            const ctx = document
+                .getElementById("rainfallChart")
+                .getContext("2d");
 
-  if ($("#browserTrafficChart").length) {
-    var doughnutChartCanvas = $("#browserTrafficChart").get(0).getContext("2d");
-    var doughnutChart = new Chart(doughnutChartCanvas, {
-      type: "doughnut",
-      data: browserTrafficData,
-      options: doughnutPieOptions,
-    });
-  }
-});
+            // Create a new chart if it doesn't exist
+            if (!rainfallChart) {
+                rainfallChart = new Chart(ctx, {
+                    type: "line",
+                    data: {
+                        labels: years,
+                        datasets: [
+                            {
+                                label: "Average Rainfall",
+                                data: rainfallValues,
+                                borderColor: "rgba(255, 159, 64, 1)",
+                                backgroundColor: "rgba(255, 159, 64, 0.2)",
+                                borderWidth: 2,
+                                tension: 0.3, // Add smooth curves to the line
+                            },
+                        ],
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: "Year",
+                                },
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: "Rainfall (mm)",
+                                },
+                                min: 0, // Set the minimum value of the y-axis
+                                ticks: {
+                                    callback: function (value) {
+                                        return value + " mm"; // Append mm to y-axis labels
+                                    },
+                                },
+                            },
+                        },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: "top",
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (tooltipItem) {
+                                        return `Rainfall: ${tooltipItem.raw} mm`; // Customize tooltip
+                                    },
+                                },
+                            },
+                        },
+                    },
+                });
+            } else {
+                // Update the existing chart with new data
+                rainfallChart.data.labels = years;
+                rainfallChart.data.datasets[0].data = rainfallValues;
+                rainfallChart.update();
+            }
+        })
+        .catch((error) => {
+            console.error("Error fetching data:", error);
+        });
+}
