@@ -310,7 +310,7 @@
     <script src="assets/js/jquery.cookie.js" type="text/javascript"></script>
     <script src="assets/js/dashboard.js"></script>
     <!-- <script src="assets/js/Chart.roundedBarCharts.js"></script> -->
-    <script src="assets/js/chart.js"></script>
+    <script src="/assets/js/chart.js"></script>
     <!-- End custom js for this page-->
 
     <script>
